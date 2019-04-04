@@ -1,22 +1,22 @@
-import {
-  getHTML,
-  getTwitterFollowers,
-  getInstagramFollowers
-} from './lib/scraper';
+import express from 'express';
+import { getInstagramCount, getTwitterCount } from './lib/scraper';
 
-console.log(getHTML());
+const app = express();
 
-async function go() {
-  // const igPromise = getHTML('https://instagram.com/instagram');
-  const twPromise = getHTML('https://twitter.com/Twitter');
-  const twHTML = await twPromise; // temporary
-  // const [igHTML, twHTML] = await Promise.all([igPromise, twPromise]);
-  // const igCount = await getInstagramFollowers(igHTML);
-  const twCount = await getTwitterFollowers(twHTML);
-  console.log(
-    `You have ${twCount} twitter followers `
-    // and ${igCount} instagram followers`
-  );
-}
+app.get('/scrape', async (req, res, next) => {
+  console.log('Scraping!');
+  const [igCount, twCount] = await Promise.all([
+    getInstagramCount(),
+    getTwitterCount()
+  ]);
+  console.log(twCount, igCount);
+  res.json({ igCount, twCount });
+});
 
-go();
+app.listen(3000, () => {
+  console.log(`Example App Running on PORT 3000`);
+});
+
+// 1. Make an Express Server
+// 2. Save data to db
+// 3. Setup a cron job

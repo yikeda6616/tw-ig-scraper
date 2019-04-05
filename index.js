@@ -1,5 +1,6 @@
 import express from 'express';
 import { getInstagramCount, getTwitterCount } from './lib/scraper';
+import db from './lib/db';
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.get('/scrape', async (req, res, next) => {
 });
 
 app.listen(3000, () => {
-  console.log(`Example App Running on PORT 3000`);
+  console.log('Example App Running on PORT 3000');
 });
 
 // 1. Make an Express Server
